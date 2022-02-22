@@ -1,0 +1,55 @@
+---
+title: "Homework 8"
+author: "Fabián A. Araneda-Baltierra based on Kaveri Chhikara's TA"
+date: "12/8/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, include = FALSE}
+rm(list = ls())
+
+# Load packages
+library('rmutil')
+library('tidyverse')
+library('dplyr')
+library('moments')
+library('haven')
+library('boot')
+# Set a seed for random calculations
+set.seed(11221111)
+```
+
+**Question 3**
+First, we load data and data cleaning
+```{r}
+data <- data.frame(read_dta("Homework_8.dta"))
+```
+
+
+The data file has seven variables. "treated" indicates whether an individual is in the treatment group or the control group. "work" to identify whether the individual is working or not. 
+
+```{r}
+y_treat <- lm(work ~ treated, data)
+summary(y_treat)
+```
+
+The treatment effect is the coefficient from the linear regression, which is 0.07794
+The value 0.07794 indicates the fraction of people who benefit by being part of the treatment group where they received job search assistance. 
+
+
+#marginals pmfs
+**Question 3.A**
+```{r}
+f_treat <- data %>%  filter(treated == 1) %>% count(work)
+f_treat %>%  mutate (prob = n/sum(n))
+
+```
+**Question 3.B**
+```{r}
+f_control <- data %>%  filter(treated == 0) %>% count(work)
+f_control %>%  mutate (prob = n/sum(n))
+```
